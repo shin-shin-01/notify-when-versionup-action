@@ -1,0 +1,5 @@
+name: 'Hello World'
+description: 'print "Hello, World"'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
