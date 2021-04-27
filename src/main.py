@@ -1,4 +1,5 @@
 import sys, re
+from typing import List, Union
 
 TARGET = "https://api.github.com/repos/[^/\n]*/[^/\n]*/issues/\d*"
 
@@ -15,7 +16,7 @@ ex)
 input ./test/Dockerfile:2:# https://api.github.com/repos/octocat/hello-world/issues/42
 return ./test/Dockerfile, 2, https://api.github.com/repos/octocat/hello-world/issues/42
 """
-def split_grep_result(grep_result: str) -> list[str, str, str]:
+def split_grep_result(grep_result: str) -> List[Union[str, str, str]]:
     # ファイルのパスと行数を取得
     filepath_line_split = re.findall('([^:]*):([^:]*)', grep_result)
     # ターゲットとなるパスを取得
