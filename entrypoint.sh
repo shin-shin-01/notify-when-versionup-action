@@ -4,5 +4,9 @@ echo "Hello, World in entrypoint.sh"
 
 # show list
 ls -a
+ls -a /
+ls -a /github
+ls -a /github/workspace
+ls -a /github/workflow
 
-python src/main.py
+python /myapp/src/main.py
