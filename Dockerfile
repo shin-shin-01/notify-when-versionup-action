@@ -1,10 +1,12 @@
 FROM python:latest
 
-ADD src /src
+RUN mkdir /myapp
+ADD . /myapp
 
-ADD requirements.txt /requirements.txt
+WORKDIR /myapp
+
 RUN pip install -r requirements.txt
 
-RUN chmod +x src/main.py
+RUN chmod +x /myapp/entrypoint.sh
 
-CMD [ "python", "./src/main.py" ]
+ENTRYPOINT ["/myapp/entrypoint.sh"]
