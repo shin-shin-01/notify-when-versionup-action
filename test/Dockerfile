@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-# https://api.github.com/repos/octocat/hello-world/issues/42# https://api.github.com/repos/octocat/hello-world/issues/42
+# CLOSED https://github.com/shin-shin-01/github-test/issues/2
 
 COPY . /app
 RUN make /app
