@@ -1,11 +1,15 @@
 import sys, re
 from typing import List, Union
+from check import is_closed_issue
 
 TARGET = "https://github.com/([^/]*)/([^/]*)/issues/(\d*)"
 
 def main():
     file_path, line, target_info = split_grep_result(sys.argv[1])
     print(file_path, line, target_info)
+
+    if is_closed_issue(target_info[0], target_info[1], target_info[2]):
+        print("this issue is closed")
 
 
 """
