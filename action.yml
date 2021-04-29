@@ -1,5 +1,10 @@
 name: 'Hello World'
 description: 'print "Hello, World"'
+inputs:
+  GITHUB_TOKEN:
+    description: 'github token'
+    required: true
+    default: 'None'
 runs:
   using: 'docker'
   image: 'Dockerfile'
