@@ -16,3 +16,7 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ inputs.GITHUB_TOKEN }}
+    - ${{ inputs.REPOSITORY }}
+    - ${{ inputs.DEFAULT_BRANCH }}
