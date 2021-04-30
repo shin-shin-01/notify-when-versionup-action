@@ -5,6 +5,14 @@ inputs:
     description: 'github token'
     required: true
     default: 'None'
+  REPOSITORY:
+    description: 'github repository'
+    required: true
+    default: 'None'
+  DEFAULT_BRANCH:
+    description: 'github default branch'
+    required: true
+    default: 'main'
 runs:
   using: 'docker'
   image: 'Dockerfile'

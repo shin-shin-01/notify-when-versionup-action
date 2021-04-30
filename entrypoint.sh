@@ -2,6 +2,10 @@
 
 echo "Hello, World in entrypoint.sh"
 
+# github actions inputs
+GITHUB_TOKEN = $1
+GITHUB_REPOSITORY = $2
+GITHUB_DEFAULT_BRANCH = $3
 
 # TODO: add release url
 
@@ -18,6 +22,6 @@ IFS=$'
 for result in $FILE_COMMENT_RESULT
 do
 
-python /myapp/src/main.py $result
+python /myapp/src/main.py $GITHUB_TOKEN $GITHUB_REPOSITORY $GITHUB_DEFAULT_BRANCH $result
 
 done
