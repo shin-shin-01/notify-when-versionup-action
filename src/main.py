@@ -1,5 +1,5 @@
 import sys
-from func import split_grep_result, is_issue_closed, edit_code
+from func import split_grep_result, is_issue_closed, edit_code, revert_code
 from git import GitClass
 
 TARGET = "https://github.com/([^/]*)/([^/]*)/issues/(\d*)"
@@ -44,6 +44,11 @@ def main():
         print("done CreatePullRequest")
     except Exception:
         print('Faild...')
+
+    """
+    挿入したコメント '# this may be fixed!' を削除する
+    """
+    revert_code(file_path=file_path, line=line)
 
     print("Done! notifyAction")
 
