@@ -1,6 +1,7 @@
 import re
 import requests
 from typing import List, Union
+from datetime import datetime
 
 """
 split grep_result
@@ -23,6 +24,7 @@ def split_grep_result(TARGET: str, grep_result: str) -> List[Union[str, int, str
 
 """
 ISSUE が CLOSE されているかの確認
+- 24時間以内にCLOSEされていたらPR作成を行う
 """
 def is_issue_closed(owner: str, repo: str, number: str) -> bool:
     response = requests.get(f'https://api.github.com/repos/{owner}/{repo}/issues/{number}')
@@ -32,9 +34,14 @@ def is_issue_closed(owner: str, repo: str, number: str) -> bool:
     response = response.json()
     state = response['state']
 
-    # closed_at = response['closed_at']
+    if state != 'closed': return False
+
+    closed_at = response['closed_at']
+    datetime_closed_at = datetime.strptime(closed_at, "%Y-%m-%dT%H:%M:%SZ")
+    now = datetime.now()
     
-    return state == 'closed'
+    # ISSUE が closed かつ closed_at との時間差が 1日以内であれば TRUE
+    return (now - datetime_closed_at).days < 1
 
 
 """
