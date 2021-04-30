@@ -17,7 +17,7 @@ def main():
     notify の条件確認
     """
     if not is_issue_closed(owner=target_info[0], repo=target_info[1], number=target_info[2]):
-        print("this issue is still opened")
+        print("this issue is 'still opened' or 'closed at more than a day ago'.")
         return
 
     """
