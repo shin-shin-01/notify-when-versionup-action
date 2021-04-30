@@ -57,7 +57,7 @@ class GitClass:
 
         response = requests.get(
             git_refs_api,
-            headers = self.__header,
+            headers = self.__header(),
         )
 
         if not response.ok:
@@ -82,7 +82,7 @@ class GitClass:
 
         response = requests.post(
             git_refs_api,
-            headers = self.__header,
+            headers = self.__header(),
             data=json.dumps(payload)
         )
 
@@ -98,7 +98,7 @@ class GitClass:
 
         response = requests.get(
             git_content_url,
-            headers = self.__header
+            headers = self.__header()
         )
 
         if not response.ok:
@@ -127,7 +127,7 @@ class GitClass:
 
         response = requests.put(
             git_content_url,
-            headers = self.__header,
+            headers = self.__header(),
             data = json.dumps(payload),
         )
 
@@ -150,7 +150,7 @@ class GitClass:
 
         response = requests.post(
             git_pulls_api,
-            headers = self.__header,
+            headers = self.__header(),
             data = json.dumps(payload)
         )
 
