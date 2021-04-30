@@ -29,7 +29,7 @@ ISSUE が CLOSE されているかの確認
 def is_issue_closed(owner: str, repo: str, number: str) -> bool:
     response = requests.get(f'https://api.github.com/repos/{owner}/{repo}/issues/{number}')
 
-    if response.status_code != 200: return False
+    if response.ok: return False
 
     response = response.json()
     state = response['state']
@@ -42,6 +42,22 @@ def is_issue_closed(owner: str, repo: str, number: str) -> bool:
     
     # ISSUE が closed かつ closed_at との時間差が 1日以内であれば TRUE
     return (now - datetime_closed_at).days < 1
+
+"""
+新しいバージョンがリリース されているかの確認
+- 24時間以内にリリースされていたらPR作成を行う
+"""
+def is_new_version_released(owner: str, repo: str) -> bool:
+    response = requests.get(f'https://api.github.com/repos/{owner}/{repo}/releases/latest')
+
+    if response.ok: return False
+
+    published_at = response['published_at']
+    datetime_published_at = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%SZ")
+    now = datetime.now()
+
+    # published_at との時間差が 1日以内であれば TRUE
+    return (now - datetime_published_at).days < 1
 
 
 """
