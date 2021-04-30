@@ -9,7 +9,7 @@ from datetime import datetime
 - CreateBranch: base_sha
 - GetContentSha: file_path
 - PushToGitHub: file_path, content_sha
-- CreatePullRequest
+- CreatePullRequest: target_type
 """
 class GitClass:
     owner = ""
@@ -138,12 +138,17 @@ class GitClass:
     """
     create PullRequest
     """
-    def CreatePullRequest(self) -> None:
+    def CreatePullRequest(self, target_type: str) -> None:
         git_pulls_api = f"https://api.github.com/repos/{self.owner}/{self.repo}/pulls"
+
+        body_message = {
+            "issue": "This issue is closed within a day.\nPlease check.",
+            "release": "New version is released.\nPlease check."
+        }
 
         payload = {
             "title": "notify link outdated",
-            "body": "this link may be outdated.\nplease check.",
+            "body": body_message[ target_type ],
             "head": f"{self.owner}:{self.head_branch}",
             "base": self.base_branch,
         }
