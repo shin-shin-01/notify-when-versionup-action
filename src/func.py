@@ -45,8 +45,22 @@ def edit_code(file_path: str, line: int) -> None:
     with open(file_path)as f:
         data = f.readlines()
 
-    #3行目に挿入
     data.insert(line, '# this may be fixed!\n')
+
+    #元のファイルに書き込み
+    with open(file_path, mode='w')as f:
+        f.writelines(data)
+
+"""
+挿入した '# this may be fixed!' を削除する
+"""
+def revert_code(file_path: str, line: int) -> None:
+    #ファイルをリストで読み込み
+    with open(file_path)as f:
+        data = f.readlines()
+
+    #挿入したコメントを削除
+    data.pop(line)
 
     #元のファイルに書き込み
     with open(file_path, mode='w')as f:
