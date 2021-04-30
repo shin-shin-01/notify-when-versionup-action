@@ -1,35 +1,51 @@
-import sys, re
-from typing import List, Union
-from check import is_issue_closed
+import sys
+from func import split_grep_result, is_issue_closed, edit_code
+from git import GitClass
 
 TARGET = "https://github.com/([^/]*)/([^/]*)/issues/(\d*)"
 
 def main():
-    file_path, line, target_info = split_grep_result(sys.argv[1])
+    git_token = sys.argv[1]
+    git_owner, git_repo = sys.argv[2].split("/")
+    default_branch = sys.argv[3]
+
+    file_path, line, target_info = split_grep_result(TARGET, sys.argv[4])
     print(file_path, line, target_info)
+    
 
-    if is_issue_closed(target_info[0], target_info[1], target_info[2]):
-        print("this issue is closed")
+    """
+    notify の条件確認
+    """
+    if not is_issue_closed(owner=target_info[0], repo=target_info[1], number=target_info[2]):
+        print("this issue is still opened")
+        return
 
+    """
+    修正できる箇所に コメント '# this may be fixed!' を挿入する
+    """
+    edit_code(file_path=file_path, line=line)
 
-"""
-split grep_result
-return file_path, line, target_info
+    """
+    Git: ブランチ作成 / コミット作成 / PR作成
+    """
+    git = GitClass(owner=git_owner, repo=git_repo, base_branch=default_branch, git_token=git_token)
 
-ex)
-input ./test/Dockerfile:2:# https://github.com/shin-shin-01/github-test/issues/2
-return ./test/Dockerfile, 2, ( shin-shin-01, github-test, 2 )
-"""
-def split_grep_result(grep_result: str) -> List[Union[str, str, str]]:
-    # ファイルのパスと行数を取得
-    filepath_line_split = re.findall('([^:]*):([^:]*)', grep_result)
-    # ターゲットとなるパスを取得
-    # - 取得条件が変化する可能性があるため個別に取得
-    # - 複数存在する場合はひとつめのみ取得
-    target_info = re.findall(f'{TARGET}', grep_result)
+    try:
+        print("start GitAction")
+        base_sha = git.GetBaseSha()
+        print("done GetBaseSha")
+        git.CreateBranch(base_sha=base_sha)
+        print("done CreateBranch")
+        content_sha = git.GetContentSha(file_path=file_path)
+        print("done GetContentSha")
+        git.PushToGitHub(file_path=file_path, content_sha=content_sha)
+        print("done PushToGitHub")
+        git.CreatePullRequest()
+        print("done CreatePullRequest")
+    except Exception:
+        print('Faild...')
 
-    return filepath_line_split[0][0], filepath_line_split[0][1], target_info[0]
-
+    print("Done! notifyAction")
 
 if __name__ == "__main__":
     print("hello, world in python")
