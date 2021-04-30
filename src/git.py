@@ -119,7 +119,7 @@ class GitClass:
         base64content = base64.b64encode(open(file_path, "rb").read())
 
         payload = ({
-            "message":"commit message",
+            "message":"add notify comment",
             "branch": self.head_branch,
             "content": base64content.decode("utf-8") ,
             "sha": content_sha
@@ -142,8 +142,8 @@ class GitClass:
         git_pulls_api = f"https://api.github.com/repos/{self.owner}/{self.repo}/pulls"
 
         payload = {
-            "title": "title",
-            "body": "body",
+            "title": "notify link outdated",
+            "body": "this link may be outdated.\nplease check.",
             "head": f"{self.owner}:{self.head_branch}",
             "base": self.base_branch,
         }
