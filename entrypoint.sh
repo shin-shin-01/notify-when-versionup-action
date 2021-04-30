@@ -3,9 +3,9 @@
 echo "Hello, World in entrypoint.sh"
 
 # github actions inputs
-GITHUB_TOKEN = $1
-GITHUB_REPOSITORY = $2
-GITHUB_DEFAULT_BRANCH = $3
+GITHUB_TOKEN=$1
+GITHUB_REPOSITORY=$2
+GITHUB_DEFAULT_BRANCH=$3
 
 # TODO: add release url
 
