@@ -73,7 +73,7 @@ def edit_code(file_path: str, line: int) -> None:
     with open(file_path)as f:
         data = f.readlines()
 
-    data.insert(line, '# this may be fixed!\n')
+    data.insert(line - 1, '# this may be fixed!\n')
 
     #元のファイルに書き込み
     with open(file_path, mode='w')as f:
@@ -88,7 +88,7 @@ def revert_code(file_path: str, line: int) -> None:
         data = f.readlines()
 
     #挿入したコメントを削除
-    data.pop(line)
+    data.pop(line - 1)
 
     #元のファイルに書き込み
     with open(file_path, mode='w')as f:
