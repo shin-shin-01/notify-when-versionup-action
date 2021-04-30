@@ -6,7 +6,7 @@ TARGET = "https://github.com/([^/]*)/([^/]*)/issues/(\d*)"
 
 def main():
     git_token = sys.argv[1]
-    git_owner, git_repo = sys.argv[2].split("/")
+    git_owner_repo = sys.argv[2].split("/")
     default_branch = sys.argv[3]
 
     file_path, line, target_info = split_grep_result(TARGET, sys.argv[4])
@@ -28,7 +28,7 @@ def main():
     """
     Git: ブランチ作成 / コミット作成 / PR作成
     """
-    git = GitClass(owner=git_owner, repo=git_repo, base_branch=default_branch, git_token=git_token)
+    git = GitClass(owner=git_owner_repo[0], repo=git_owner_repo[1], base_branch=default_branch, git_token=git_token)
 
     try:
         print("start GitAction")

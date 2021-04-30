@@ -114,7 +114,7 @@ class GitClass:
     create commit and push to github
     """
     def PushToGitHub(self, file_path: str, content_sha: str) -> None:
-        git_content_url = f"https://api.github.com/repos/{owner}/{repo}/contents/{file_path}"
+        git_content_url = f"https://api.github.com/repos/{self.owner}/{self.repo}/contents/{file_path}"
     
         base64content = base64.b64encode(open(file_path, "rb").read())
 
