@@ -1,24 +1,29 @@
 import sys
-from func import split_grep_result, is_issue_closed, edit_code, revert_code
+from func import split_grep_result, is_issue_closed, is_new_version_released, edit_code, revert_code
 from git import GitClass
-
-TARGET = "https://github.com/([^/]*)/([^/]*)/issues/(\d*)"
 
 def main():
     git_token = sys.argv[1]
     git_owner_repo = sys.argv[2].split("/")
     default_branch = sys.argv[3]
+    target_type = sys.argv[4]
 
-    file_path, line, target_info = split_grep_result(TARGET, sys.argv[4])
+    file_path, line, target_info = split_grep_result(target_type, sys.argv[5])
     print(file_path, line, target_info)
     
 
     """
     notify の条件確認
     """
-    if not is_issue_closed(owner=target_info[0], repo=target_info[1], number=target_info[2]):
-        print("this issue is 'still opened' or 'closed at more than a day ago'.")
-        return
+    if target_type == "issue":
+        if not is_issue_closed(owner=target_info[0], repo=target_info[1], number=target_info[2]):
+            print("this issue is 'still opened' or 'closed at more than a day ago'.")
+            return
+    else:
+        if not is_new_version_released(owner=target_info[0], repo=target_info[1]):
+            print("new version is 'not released' or 'released at more than a day ago'.")
+            return
+
 
     """
     修正できる箇所に コメント '# this may be fixed!' を挿入する
