@@ -45,7 +45,7 @@ def main():
         print("done GetContentSha")
         git.PushToGitHub(file_path=file_path, content_sha=content_sha)
         print("done PushToGitHub")
-        git.CreatePullRequest()
+        git.CreatePullRequest(target_type=target_type)
         print("done CreatePullRequest")
     except Exception:
         print('Faild...')
