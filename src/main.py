@@ -1,11 +1,12 @@
-import sys
+import sys, re
 from func import split_grep_result, is_issue_closed, is_new_version_released, edit_code, revert_code
 from git import GitClass
 
 def main():
     git_token = sys.argv[1]
     git_owner_repo = sys.argv[2].split("/")
-    default_branch = sys.argv[3]
+    # ↓ ex) refs/heads/main -> ['refs/heads/main', 'main]
+    default_branch = re.search(r'refs/heads/(.*)', sys.argv[3])[1]
     target_type = sys.argv[4]
 
     file_path, line, target_info = split_grep_result(target_type, sys.argv[5])
