@@ -13,7 +13,7 @@ GITHUB_DEFAULT_BRANCH=$3
 # ISSUE ==========================================
 # コメントを検出する
 # ex) ./test/Dockerfile:2:# https://github.com/shin-shin-01/github-test/issues/2
-FILE_COMMENT_RESULT=`find . -name Dockerfile | xargs grep -s -n "#[^\n]*https://github.com/[^/]*/[^/]*/issues/\d*" `
+FILE_COMMENT_RESULT=`find . -name Dockerfile | xargs grep -s -n "#.*https://github.com/[^/]*/[^/]*/issues/\d*" `
 
 # 改行 で split
 # $'\n' not working in docker
@@ -30,7 +30,7 @@ done
 # RELEASE ==========================================
 # コメントを検出する
 # ex) ./test/Dockerfile:2:# https://github.com/shin-shin-01/github-test/releases
-FILE_COMMENT_RESULT=`find . -name Dockerfile | xargs grep -s -n "#[^\n]*https://github.com/[^/]*/[^/]*/releases" `
+FILE_COMMENT_RESULT=`find . -name Dockerfile | xargs grep -s -n "#.*https://github.com/[^/]*/[^/]*/releases" `
 
 # 改行 で split
 # $'\n' not working in docker
