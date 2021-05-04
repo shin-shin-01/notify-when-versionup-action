@@ -57,6 +57,7 @@ def is_new_version_released(owner: str, repo: str) -> bool:
 
     if not response.ok: return False
 
+    response = response.json()
     published_at = response['published_at']
     datetime_published_at = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%SZ")
     now = datetime.now()
