@@ -101,14 +101,15 @@ issue クローズ時の PR内容
 """
 def get_issue_pr_message(issue: Dict) -> Dict:
     repo_issue_num = re.findall(f"https://github.com/(.*)", issue['html_url'])[0]
+    # 引用のために > を文頭につける
+    issue_body = "\n> ".join(issue['body'].splitlines())
 
     title = f"notify: {repo_issue_num} is closed."
     body = f"""
     {repo_issue_num} is closed.
 
-    >> "{issue['title']}"
-    >
-    > {issue['body']}
+    {issue['title']}
+    {issue_body}
 
     see here: {issue['html_url']}
     closed at: {issue['closed_at']}
@@ -124,13 +125,15 @@ new version リリース時の PR内容
 """
 def get_release_pr_message(release: Dict) -> Dict:
     repo = re.findall(f"https://github.com/(.*)/releases/tag/{release['tag_name']}", release['html_url'])[0]
+    # 引用のために > を文頭につける
+    release_body = "\n> ".join(release['body'].splitlines())
 
     title = f"notify: {repo}'s new version `{release['tag_name']}` is released."
     body = f"""
     {repo}: new version `{release['tag_name']}` is released.
 
     ReleaseNote
-    > {release['body']}
+    {release_body}
 
     see here: {release['html_url']}
     published at: {release['published_at']}
