@@ -100,7 +100,7 @@ def revert_code(file_path: str, line: int) -> None:
 issue クローズ時の PR内容
 """
 def get_issue_pr_message(issue: Dict) -> Dict:
-    repo_issue_num = issue['html_url'].lstrip("https://github.com/")
+    repo_issue_num = re.findall(f"https://github.com/(.*)", issue['html_url'])[0]
 
     title = f"notify: {repo_issue_num} is closed."
     body = f"""
@@ -123,8 +123,7 @@ def get_issue_pr_message(issue: Dict) -> Dict:
 new version リリース時の PR内容
 """
 def get_release_pr_message(release: Dict) -> Dict:
-    repo = release['html_url'].lstrip("https://github.com/")
-    repo = repo.rstrip(f"releases/tag/{release['tag_name']}")
+    repo = re.findall(f"https://github.com/(.*)/releases/tag/{release['tag_name']}", release['html_url'])[0]
 
     title = f"notify: {repo}'s new version `{release['tag_name']}` is released."
     body = f"""
@@ -147,6 +146,6 @@ def get_release_pr_message(release: Dict) -> Dict:
 複数行文章の最初の空白を削除する関数
 """
 def text_format(text: str) -> str:
-    text = map(lambda txt: txt.lstrip(), text)
+    text = map(lambda txt: txt.lstrip(), text.splitlines())
     text = list(text)[1:] # 最初の行の空白を削除
     return '\n'.join(text)
