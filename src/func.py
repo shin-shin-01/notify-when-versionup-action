@@ -16,7 +16,7 @@ ex)
 input ./test/Dockerfile:2:# https://github.com/shin-shin-01/github-test/issues/2
 return ./test/Dockerfile, 2, ( shin-shin-01, github-test, 2 )
 """
-def split_grep_result(target_type: str, grep_result: str) -> List[str, int, Tuple[str, ...]]:
+def split_grep_result(target_type: str, grep_result: str) -> List[Union[str, int, Tuple[str, ...]]]:
     # ファイルのパスと行数を取得
     filepath_line_split = re.findall('([^:]*):([^:]*)', grep_result)
     # ターゲットとなるパスを取得
