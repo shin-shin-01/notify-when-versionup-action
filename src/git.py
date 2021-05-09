@@ -138,17 +138,12 @@ class GitClass:
     """
     create PullRequest
     """
-    def CreatePullRequest(self, target_type: str) -> None:
+    def CreatePullRequest(self, message: Dict) -> None:
         git_pulls_api = f"https://api.github.com/repos/{self.owner}/{self.repo}/pulls"
 
-        body_message = {
-            "issue": "This issue is closed within a day.\nPlease check.",
-            "release": "New version is released.\nPlease check."
-        }
-
         payload = {
-            "title": "notify link outdated",
-            "body": body_message[ target_type ],
+            "title": message["title"],
+            "body": message["body"],
             "head": f"{self.owner}:{self.head_branch}",
             "base": self.base_branch,
         }
