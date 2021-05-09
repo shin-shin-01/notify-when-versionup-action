@@ -1,5 +1,9 @@
 import sys, re
-from func import split_grep_result, is_issue_closed, is_new_version_released, edit_code, revert_code
+from func import (
+    split_grep_result, is_issue_closed, is_new_version_released,
+    edit_code, revert_code,
+    get_issue_pr_message, get_release_pr_message
+)
 from git import GitClass
 
 def main():
@@ -17,11 +21,13 @@ def main():
     notify の条件確認
     """
     if target_type == "issue":
-        if not is_issue_closed(owner=target_info[0], repo=target_info[1], number=target_info[2]):
+        response = is_issue_closed(owner=target_info[0], repo=target_info[1], number=target_info[2])
+        if not response:
             print("this issue is 'still opened' or 'closed at more than a day ago'.")
             return
     else:
-        if not is_new_version_released(owner=target_info[0], repo=target_info[1]):
+        response = is_new_version_released(owner=target_info[0], repo=target_info[1])
+        if not response:
             print("new version is 'not released' or 'released at more than a day ago'.")
             return
 
@@ -46,7 +52,12 @@ def main():
         print("done GetContentSha")
         git.PushToGitHub(file_path=file_path, content_sha=content_sha)
         print("done PushToGitHub")
-        git.CreatePullRequest(target_type=target_type)
+        if target_type == "issue":
+            message = get_issue_pr_message(issue=response)
+        else:
+            message = get_release_pr_message(release=response)
+        print("done GetPullRequest Docs")
+        git.CreatePullRequest(message=message)
         print("done CreatePullRequest")
     except Exception:
         print('Faild...')
