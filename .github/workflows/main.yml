@@ -1,12 +1,10 @@
 name: Test
 
-on: [push]
-
-# on:
-#   schedule:
-#     # 毎日 11:00 (JST) に処理を実行する。
-#     # UTC 02:00 -> JST 11:00
-#     - cron: '0 2 * * *'
+on:
+  schedule:
+    # 毎日 12:00 (JST) に処理を実行する。
+    # UTC 03:00 -> JST 12:00
+    - cron: '0 3 * * *'
 
 jobs:
   build:
